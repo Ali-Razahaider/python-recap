@@ -20,6 +20,18 @@ status = "adult" if age >= 18 else "minor"
 if []:     print("won't print")
 if [1, 2]: print("will print")
 
+# Structural Pattern Matching (Python 3.10+) — match / case
+status_code = 404
+match status_code:
+    case 200:
+        message = "OK"
+    case 400 | 404:
+        message = "Client Error"
+    case 500:
+        message = "Server Error"
+    case _:
+        message = "Unknown Status"  # wildcard default case
+
 # --- LOOPS ---
 for i in range(5):        # 0, 1, 2, 3, 4
     print(i)
@@ -52,12 +64,20 @@ for n in range(2, 10):
     else:
         print(f"{n} is prime")
 
-# --- FUNCTIONS ---
-def add(a, b):
+# --- FUNCTIONS & TYPE HINTS ---
+# Basic function with default parameter & type annotations
+def add(a: int, b: int) -> int:
+    """Add two numbers and return the result."""
     return a + b
 
-def greet(name, greeting="Hello"):       # default parameter
+def greet(name: str, greeting: str = "Hello") -> str:
     return f"{greeting}, {name}!"
+
+# Keyword-only arguments (forces named parameters at call site after '*')
+def create_user(username: str, *, is_admin: bool = False) -> dict:
+    return {"username": username, "is_admin": is_admin}
+
+# Correct usage: create_user("alice", is_admin=True)
 
 # *args = extra positional args (tuple), **kwargs = extra keyword args (dict)
 def flexible(*args, **kwargs):
@@ -75,24 +95,31 @@ doubled = list(map(lambda x: x * 2, nums))       # [2, 4, 6, 8, 10]
 odds = list(filter(lambda x: x % 2 != 0, nums))   # [1, 3, 5]
 
 # --- ERROR HANDLING ---
+# Custom Exception class
+class ValidationError(Exception):
+    """Raised when validation fails."""
+    pass
+
 try:
-    result = 10 / 0
+    result = 10 / 2
 except ZeroDivisionError:
     print("Can't divide by zero!")
 except (TypeError, ValueError) as e:
     print(f"Type or Value error: {e}")
-except Exception as e:
-    print(f"Something else: {e}")     # catch-all, use sparingly
+else:
+    # Runs ONLY if no exceptions were raised in try block
+    print(f"Calculation succeeded: {result}")
 finally:
-    print("This ALWAYS runs")
+    # ALWAYS runs regardless of errors
+    print("Cleanup complete.")
 
-# raise — enforce preconditions
-def set_age(age):
+# raise — enforce preconditions with built-in or custom exceptions
+def set_age(age: int) -> int:
     if not isinstance(age, int) or age < 0:
-        raise ValueError("Age must be a non-negative integer")
+        raise ValidationError("Age must be a non-negative integer")
     return age
 
-# --- FILE I/O ---
+# --- FILE I/O & CONTEXT MANAGERS ---
 # Always use 'with' — auto-closes file even if error occurs
 with open("output.txt", "w") as f:     # "w" = write (overwrites), "a" = append
     f.write("Hello, file!\n")
@@ -105,7 +132,20 @@ with open("output.txt", "r") as f:
         print(line.strip())
 
 import os
-os.remove("output.txt")
+if os.path.exists("output.txt"):
+    os.remove("output.txt")
+
+# Custom Context Manager via contextlib (80/20 standard library helper)
+from contextlib import contextmanager
+
+@contextmanager
+def temporary_status(new_status):
+    print(f"Setting status to: {new_status}")
+    yield new_status
+    print("Resetting status back to normal")
+
+with temporary_status("MAINTENANCE") as status:
+    print(f"Performing task under status: {status}")
 
 # --- BUILT-IN FUNCTIONS ---
 print(list(range(5)))               # [0, 1, 2, 3, 4]
@@ -121,3 +161,4 @@ print(isinstance("hi", (int, str))) # True — check multiple types
 # Chained comparisons
 x_val = 5
 print(1 < x_val < 10)              # True — same as 1 < x_val and x_val < 10
+
