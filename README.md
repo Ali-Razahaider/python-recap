@@ -10,6 +10,9 @@ A collection of advanced Python concepts demonstrated with working code.
 | `generators.py` | Generators, yield, generator expressions, Fibonacci |
 | `decorators.py` | Function decorators, decorator factories, @syntax |
 | `concurrency.py` | Multi-threading, thread lifecycle, daemon threads |
+| `cli_demo.py` | Command-line argument parsing |
+| `logging_demo.py` | Logging module for tracking program flow |
+| `dataclasses_demo.py` | Data classes - simple structs with auto-generated methods |
 
 ## Running the Examples
 
