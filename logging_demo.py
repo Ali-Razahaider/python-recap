@@ -1,8 +1,7 @@
-# Simple logging example
+# Simple logging demo
 import logging
 
-# Set up logging - one line config
-logging.basicConfig(level="INFO", format="Message: %(message)s")
+logging.basicConfig(level="INFO", format=": %(message)s")
 
 def add(x, y):
     result = x + y
@@ -18,10 +17,6 @@ def divide(x, y):
         logging.error("Cannot divide by zero!")
         return None
 
-# Test the functions
-print("Testing add:")
-add(5, 3)
-
-print("\nTesting divide:")
-divide(10, 2)
-divide(10, 0)
+print("add(5, 3):", add(5, 3))
+print("divide(10, 2):", divide(10, 2))
+print("divide(10, 0):", divide(10, 0))
