@@ -16,7 +16,7 @@ A collection of advanced Python concepts demonstrated with working code.
 
 ## Running the Examples
 
-Each file can be run standalone:
+Each file can be run standalone:    
 
 ```bash
 python inheritance.py
